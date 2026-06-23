@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 const RECIPIENT = "hallo@leon-molina.com";
+const SENDER = "MEERLEBEN Website <website@leon-molina.com>";
 
 function text(value: unknown, maxLength = 300) {
   return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
@@ -48,8 +49,7 @@ export async function POST(request: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM_EMAIL;
-  if (!apiKey || !from) {
+  if (!apiKey) {
     console.error("Contact form email settings are missing.");
     return NextResponse.json({ error: "E-Mail-Versand ist noch nicht eingerichtet." }, { status: 503 });
   }
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from,
+      from: SENDER,
       to: [RECIPIENT],
       reply_to: email,
       subject: `Neue MEERLEBEN-Anfrage von ${name}`,
