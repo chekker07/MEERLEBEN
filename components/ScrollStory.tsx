@@ -33,7 +33,9 @@ export function ScrollStory() {
     phases.forEach((_, i) => {
       if (!i) return;
       tl.to(`.phase-${i-1}`, { opacity: 0, y: -20, duration: .25 }, i * .72)
-        .fromTo(`.phase-${i}`, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .35 }, i * .72 + .1);
+        .fromTo(`.phase-${i}`, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .35 }, i * .72 + .1)
+        .to(`.story-progress-${i-1}`, { backgroundColor: "rgba(255,255,255,.25)", duration: .2 }, i * .72 + .1)
+        .to(`.story-progress-${i}`, { backgroundColor: "#F2B941", duration: .2 }, i * .72 + .1);
     });
   }, { scope: root });
 
@@ -63,7 +65,7 @@ export function ScrollStory() {
           <div className="relative min-h-[9rem] sm:min-h-[8rem]">
             {phases.map((text,i)=><p key={text} className={`phase-${i} absolute inset-0 w-full max-w-[24ch] text-[clamp(1.45rem,3.8vw,2.35rem)] font-medium leading-[1.12] tracking-[-.03em] text-balance ${i ? 'opacity-0' : ''}`}>{text}</p>)}
           </div>
-          <div className="mt-3 grid grid-cols-4 gap-2">{phases.map((_,i)=><span key={i} className="h-1 rounded-full bg-white/25 first:bg-gold"/>)}</div>
+          <div className="mt-3 grid grid-cols-4 gap-2" aria-hidden="true">{phases.map((_,i)=><span key={i} className={`story-progress-${i} h-1 rounded-full ${i === 0 ? "bg-gold" : "bg-white/25"}`}/>)}</div>
         </div>
       </div>
     </section>
